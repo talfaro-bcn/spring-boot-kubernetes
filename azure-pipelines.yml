@@ -35,18 +35,18 @@ stages:
           effectivePomSkip: false
           sonarQubeRunAnalysis: true
           sqMavenPluginVersionChoice: 'latest'          
-- stage: DAST_
-  jobs:
-  - job: J2
-    displayName: SCA_
-    steps:
-      - script: echo etapa SCA!
-        displayName: 'Run dependency checks'
-      - task: dependency-check-build-task@6
-        inputs:
-          projectName: 'spring-boot-kubernetes'
-          scanPath: '$(Build.SourcesDirectory)/build/libs'
-          format: 'HTML'
+#- stage: DAST_
+#  - job: J2
+#  jobs:
+#    displayName: SCA_
+#    steps:
+#      - script: echo etapa SCA!
+#        displayName: 'Run dependency checks'
+#      - task: dependency-check-build-task@6
+#        inputs:
+#          projectName: 'spring-boot-kubernetes'
+#          scanPath: '$(Build.SourcesDirectory)/build/libs'
+#          format: 'HTML'
 - stage: Container_Security_
   jobs:
     - job: J3
