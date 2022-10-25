@@ -22,7 +22,7 @@ public class ControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    public Password = "hola1234";
+    public String password = "hola1234";
 
     @TestConfiguration
     static class UserConfigTestConfig {
