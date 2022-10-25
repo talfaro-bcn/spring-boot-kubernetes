@@ -38,7 +38,7 @@ stages:
       - task: sonarcloud-buildbreaker@2
         inputs:
           SonarCloud: 'Sonarcloud_serv_conx'
-          organization: 'talfaro-bcn'          
+          organization: 'talfaro-bcn'
 #- stage: DAST_
 #  - job: J2
 #  jobs:
