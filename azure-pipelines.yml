@@ -34,7 +34,11 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: true
-          sqMavenPluginVersionChoice: 'latest'          
+          sqMavenPluginVersionChoice: 'latest'
+      - task: sonarcloud-buildbreaker@2
+        inputs:
+          SonarCloud: 'Sonarcloud_serv_conx'
+          organization: 'talfaro-bcn'          
 #- stage: DAST_
 #  - job: J2
 #  jobs:
@@ -47,34 +51,34 @@ stages:
 #          projectName: 'spring-boot-kubernetes'
 #          scanPath: '$(Build.SourcesDirectory)/build/libs'
 #          format: 'HTML'
-- stage: Container_Security_
-  jobs:
-    - job: J3
-      displayName: Container-Security
-      steps:
-        - task: DockerInstaller@0
-          inputs:
-            dockerVersion: '17.09.0-ce'
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            command: 'login'
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            repository: 'teddyalfaro/spring-boot-kubernetes'
-            command: 'build'
-            Dockerfile: '**/Dockerfile'
-            tags: 'latest'
-        - script: |
-            sudo apt-get install -y rpm
-            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
-            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-            trivy image teddyalfaro/spring-boot-kubernetes:latest
-          displayName: Image Scan
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            repository: 'teddyalfaro/spring-boot-kubernetes'
-            command: 'push'
-            tags: 'latest'
+#- stage: Container_Security_
+#  jobs:
+#    - job: J3
+#      displayName: Container-Security
+#      steps:
+#        - task: DockerInstaller@0
+#          inputs:
+#            dockerVersion: '17.09.0-ce'
+#        - task: Docker@2
+#          inputs:
+#            containerRegistry: 'docker1_srv'
+#            command: 'login'
+#        - task: Docker@2
+#          inputs:
+#            containerRegistry: 'docker1_srv'
+#            repository: 'teddyalfaro/spring-boot-kubernetes'
+#            command: 'build'
+#            Dockerfile: '**/Dockerfile'
+#            tags: 'latest'
+#        - script: |
+#            sudo apt-get install -y rpm
+#            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+#            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+#            trivy image teddyalfaro/spring-boot-kubernetes:latest
+#          displayName: Image Scan
+#        - task: Docker@2
+#          inputs:
+#            containerRegistry: 'docker1_srv'
+#            repository: 'teddyalfaro/spring-boot-kubernetes'
+#            command: 'push'
+#            tags: 'latest'
