@@ -36,3 +36,10 @@ stages:
           effectivePomSkip: false
           sonarQubeRunAnalysis: true
           sqMavenPluginVersionChoice: 'latest'
+          
+  - job: J2
+    displayName: SCA
+    steps:
+      - script: echo Hello, world!
+        displayName: 'Run a one-line script'
+    
