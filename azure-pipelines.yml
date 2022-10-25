@@ -34,10 +34,11 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: true
-          sqMavenPluginVersionChoice: 'latest'
-          
+          sqMavenPluginVersionChoice: 'latest'          
+- stage: DAST_
+  jobs:
   - job: J2
-    displayName: SCA
+    displayName: SCA_
     steps:
       - script: echo etapa SCA!
         displayName: 'Run dependency checks'
@@ -46,3 +47,4 @@ stages:
           projectName: 'spring-boot-kubernetes'
           scanPath: '$(Build.SourcesDirectory)/build/libs'
           format: 'HTML'
+
