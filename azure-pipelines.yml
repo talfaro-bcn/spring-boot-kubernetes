@@ -1,7 +1,6 @@
 pool:
   vmImage: ubuntu-latest
 
-
 stages:
 - stage: SAST_
   jobs:
@@ -40,6 +39,10 @@ stages:
   - job: J2
     displayName: SCA
     steps:
-      - script: echo Hello, world!
-        displayName: 'Run a one-line script'
-    
+      - script: echo etapa SCA!
+        displayName: 'Run dependency checks'
+      - task: dependency-check-build-task@6
+        inputs:
+          projectName: 'spring-boot-kubernetes'
+          scanPath: '$(Build.SourcesDirectory)/build/libs'
+          format: 'HTML'
