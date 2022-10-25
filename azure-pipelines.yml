@@ -55,7 +55,8 @@ stages:
         inputs:
           projectName: 'spring-boot-kubernetes'
           #scanPath: '$(Build.SourcesDirectory)/build/libs'
-          scanPath: $(System.DefaultWorkingDirectory)
+          #scanPath: $(System.DefaultWorkingDirectory)
+          scanPath: '$(Build.SourcesDirectory)/**'          
           format: 'HTML'
 #- stage: Container_Security_
 #  jobs:
