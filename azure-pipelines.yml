@@ -44,17 +44,27 @@ stages:
   - job: J2
     displayName: SCA_
     steps:
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
       - script: echo etapa SCA!
         displayName: 'Run dependency checks'
       - task: dependency-check-build-task@6
         inputs:
           projectName: 'spring-boot-kubernetes'
-          scanPath: '$(Build.SourcesDirectory)'
+          #scanPath: '$(Build.SourcesDirectory)'
           #scanPath: '*.jar'
           #scanPath: '$(Build.SourcesDirectory)/build/libs'
           #scanPath: $(System.DefaultWorkingDirectory)
           #scanPath: '$(Build.SourcesDirectory)/**'
-          #scanPath: '$(Build.SourcesDirectory)/target/*'
+          scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'HTML'
 #- stage: Container_Security_
 #  jobs:
