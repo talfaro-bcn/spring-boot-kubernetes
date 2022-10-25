@@ -100,8 +100,7 @@ stages:
             wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
             sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
             #trivy image teddyalfaro/spring-boot-kubernetes:latest 
-            trivy image teddyalfaro/spring-boot-kubernetes:latest --severity HIGH,CRITICAL --no-progress --format template --template "@contrib/junit.tpl" -o /app/junit-report.xml ${IMAGE}
-            cp junit-report.xml $(Build.ArtifactStagingDirectory)/junit-report.xml
+            trivy image teddyalfaro/spring-boot-kubernetes:latest --severity HIGH,CRITICAL 
           displayName: Image Scan
         - task: Docker@2
           inputs:
