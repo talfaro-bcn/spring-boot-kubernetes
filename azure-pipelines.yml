@@ -18,3 +18,21 @@ stages:
           mavenAuthenticateFeed: false
           effectivePomSkip: false
           sonarQubeRunAnalysis: false
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'Sonarcloud_serv_conx'
+          organization: 'talfaro-bcn'
+          projectKey: 'talfaro-bcn_spring-boot-kubernetes'
+          projectName: 'spring-boot-kubernetes'
+      
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: true
+          sqMavenPluginVersionChoice: 'latest'
