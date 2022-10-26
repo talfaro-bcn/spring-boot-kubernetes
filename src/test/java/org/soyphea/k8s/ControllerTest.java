@@ -24,16 +24,12 @@ public class ControllerTest {
     @Autowired
     private MockMvc mockMvc;
     //public String password = "hola1234";
-
-    public test(){
-        Cipher c25 = Cipher.getInstance("Blowfish");
-        return c25;
-    }
     
     @TestConfiguration
     static class UserConfigTestConfig {
         @Bean
         UserConfig userConfig() {
+            Cipher c25 = Cipher.getInstance("Blowfish");
             return new UserConfig("dara", "ok");            
         }
 
