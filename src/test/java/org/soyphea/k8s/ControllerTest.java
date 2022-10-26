@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import org.h2.security.SHA256;
+import javax.crypto.Cipher;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(Controller.class)
@@ -25,13 +25,14 @@ public class ControllerTest {
     private MockMvc mockMvc;
     //public String password = "hola1234";
 
+    public test(){
+        Cipher c25 = Cipher.getInstance("Blowfish");
+    }
+    
     @TestConfiguration
     static class UserConfigTestConfig {
         @Bean
         UserConfig userConfig() {
-            String inputString = "s3cr37";
-            byte[] key         = inputString.getBytes();
-            SHA256.getHMAC(key, message);  // Noncompliant
             return new UserConfig("dara", "ok");            
         }
 
