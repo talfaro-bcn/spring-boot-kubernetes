@@ -7,15 +7,23 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import javax.crypto.Cipher;
+import java.security.NoSuchAlgorithmException;
+import javax.crypto.NoSuchPaddingException;
+
 @SpringBootApplication
 @Slf4j
 public class K8SApplication implements CommandLineRunner {
 
-
     @Autowired
-    UserConfig userConfig;
-
+    UserConfig userConfig;   
+    
     public static void main(String[] args) {
+        try {
+            Cipher c1 = Cipher.getInstance("DES"); // Noncompliant: DES works with 56-bit keys allow attacks via exhaustive search
+        }
+        catch(NoSuchAlgorithmException|NoSuchPaddingException e) { }
+        
         SpringApplication.run(K8SApplication.class, args);
     }
 
