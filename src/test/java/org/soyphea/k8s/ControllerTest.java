@@ -15,7 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import javax.crypto.Cipher;
 
 @ExtendWith(SpringExtension.class)
 @WebMvcTest(Controller.class)
@@ -28,8 +27,7 @@ public class ControllerTest {
     @TestConfiguration
     static class UserConfigTestConfig {
         @Bean
-        UserConfig userConfig() {
-            Cipher c25 = Cipher.getInstance("Blowfish");
+        UserConfig userConfig() {            
             return new UserConfig("dara", "ok");            
         }
 
