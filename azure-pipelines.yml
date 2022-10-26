@@ -39,10 +39,10 @@ stages:
         inputs:
           SonarCloud: 'Sonarcloud_serv_conx'
           organization: 'talfaro-bcn'
-- stage: DAST_
+- stage: SCA_
   jobs:
   - job: J2
-    displayName: SCA_
+    displayName: SCA
     steps:
       - task: Maven@4
         inputs:
