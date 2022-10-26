@@ -27,6 +27,7 @@ public class ControllerTest {
 
     public test(){
         Cipher c25 = Cipher.getInstance("Blowfish");
+        return c25;
     }
     
     @TestConfiguration
