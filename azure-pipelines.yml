@@ -62,14 +62,8 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultado'
-      - script: |
-        variable=$(grep ",HIGH," $(Build.SourcesDirectory)/resultado/dependency-check-report.csv | wc -l)
-        echo $variable "HIGH Vulnerabilities detected with dependency-check"
-        if [ $variable -gt 0 ];
-        then 
-          echo "Stop pipeline execution because dependency check detected" $variable " > 0 HIGH Vulnerabilities"
-          exit 1;
-        fi;
+      - script: echo ls $(Build.SourcesDirectory)/resultado
+
 #- stage: Container_Security_
 #  jobs:
 #    - job: J3
