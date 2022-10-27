@@ -64,7 +64,7 @@ stages:
       - script: |
           #echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
           vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)          
-          if [ $vulne -gt 0 ]
+          if [ $vulne -gt 0 ];
           then 
             echo $vulne "HIGH Vulnerabilidades encontradas"
             echo "Proceso Pipeline detenido: HIGH Vulnerabilities"
