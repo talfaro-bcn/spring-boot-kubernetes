@@ -27,12 +27,12 @@ stages:
           reportsDirectory: '$(Build.SourcesDirectory)/resultados'
       - script: |
           #echo ls $(Build.SourcesDirectory)/resultados/*
-          echo "$(<dependency-check-report.csv )"
-          variable=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)
-          echo $variable "HIGH Vulnerabilities detected with dependency-check"
-          if [ $variable -gt 0 ];
+          echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
+          vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)
+          echo $vulne "HIGH Vulnerabilities detected with dependency-check"
+          if [ $vulne -gt 0 ];
           then 
-            echo "Stop pipeline execution because dependency check detected" $variable " > 0 HIGH Vulnerabilities"
+            echo "Pipeline detenido --> HIGH Vulnerabilities"
             exit 1;
           fi;
 
