@@ -11,8 +11,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Slf4j
 public class K8SApplication implements CommandLineRunner {
 
+
     @Autowired
-    UserConfig userConfig;   
+    UserConfig userConfig;
+
+    public static void main(String[] args) {
+        SpringApplication.run(K8SApplication.class, args);
+    }
 
     @Override
     public void run(String... args) throws Exception {
