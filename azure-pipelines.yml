@@ -26,13 +26,12 @@ stages:
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultados'
       - script: |
-          #echo ls $(Build.SourcesDirectory)/resultados/*
-          echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
-          vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)
-          echo $vulne "HIGH Vulnerabilities detected with dependency-check"
+          #echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
+          vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)          
           if [ $vulne -gt 0 ];
           then 
-            echo "Pipeline detenido --> HIGH Vulnerabilities"
+            echo $vulne "HIGH Vulnerabilidades encontradas"
+            echo "Proceso Pipeline detenido: HIGH Vulnerabilities"
             exit 1;
           fi;
 
