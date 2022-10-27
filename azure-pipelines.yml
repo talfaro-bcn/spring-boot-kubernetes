@@ -39,65 +39,74 @@ stages:
 #        inputs:
 #          SonarCloud: 'Sonarcloud_serv_conx'
 #          organization: 'talfaro-bcn'
-#- stage: SCA_
-#  jobs:
-#  - job: J2
-#    displayName: SCA
-#    steps:
-#      - task: Maven@4
-#        inputs:
-#          mavenPomFile: 'pom.xml'
-#          publishJUnitResults: true
-#          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#          javaHomeOption: 'JDKVersion'
-#          mavenVersionOption: 'Default'
-#          mavenAuthenticateFeed: false
-#          effectivePomSkip: false
-#          sonarQubeRunAnalysis: false
-#      - script: echo etapa SCA!
-#        displayName: 'Run dependency checks'
-#      - task: dependency-check-build-task@6
-#        inputs:
-#          projectName: 'spring-boot-kubernetes'
-#          scanPath: '$(Build.SourcesDirectory)/target/*'
-#          format: 'HTML'
-- stage: Container_Security_
+- stage: SCA_
   jobs:
-    - job: J3
-      displayName: Container-Security
-      steps:
-        - task: Maven@4
-          inputs:
-            mavenPomFile: 'pom.xml'
-            publishJUnitResults: true
-            testResultsFiles: '**/surefire-reports/TEST-*.xml'
-            javaHomeOption: 'JDKVersion'
-            mavenVersionOption: 'Default'
-            mavenAuthenticateFeed: false
-            effectivePomSkip: false
-            sonarQubeRunAnalysis: false
-        - task: DockerInstaller@0
-          inputs:
-            dockerVersion: '17.09.0-ce'
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            command: 'login'
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            repository: 'teddyalfaro/spring-boot-kubernetes'
-            command: 'build'
-            Dockerfile: '**/Dockerfile'
-            tags: 'latest'
-        - script: |
-            sudo apt-get install -y rpm
-            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
-            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-            trivy image teddyalfaro/spring-boot-kubernetes:latest 
-            #trivy image --exit-code 0 --severity LOW,MEDIUM teddyalfaro/spring-boot-kubernetes:latest
-            #trivy image --exit-code 1 --severity HIGH,CRITICAL teddyalfaro/spring-boot-kubernetes:latest
-          displayName: Image Scan
+  - job: J2
+    displayName: SCA
+    steps:
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - script: echo etapa SCA!
+        displayName: 'Run dependency checks'
+      - task: dependency-check-build-task@6
+        inputs:
+          projectName: 'spring-boot-kubernetes'
+          scanPath: '$(Build.SourcesDirectory)/target/*'
+          format: 'ALL'
+          reportsDirectory: '$(Build.SourcesDirectory)/resultado'
+      - script: |
+        variable=$(grep ",HIGH," $(Build.SourcesDirectory)/resultado/dependency-check-report.csv | wc -l)
+        echo $variable "HIGH Vulnerabilities detected with dependency-check"
+        if [ $variable -gt 0 ];
+        then 
+          echo "Stop pipeline execution because dependency check detected" $variable " > 0 HIGH Vulnerabilities"
+          exit 1;
+        fi;
+#- stage: Container_Security_
+#  jobs:
+#    - job: J3
+#      displayName: Container-Security
+#      steps:
+#        - task: Maven@4
+#          inputs:
+#            mavenPomFile: 'pom.xml'
+#            publishJUnitResults: true
+#            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#            javaHomeOption: 'JDKVersion'
+#            mavenVersionOption: 'Default'
+#            mavenAuthenticateFeed: false
+#            effectivePomSkip: false
+#            sonarQubeRunAnalysis: false
+#        - task: DockerInstaller@0
+#          inputs:
+#            dockerVersion: '17.09.0-ce'
+#        - task: Docker@2
+#          inputs:
+#            containerRegistry: 'docker1_srv'
+#            command: 'login'
+#        - task: Docker@2
+#          inputs:
+#            containerRegistry: 'docker1_srv'
+#            repository: 'teddyalfaro/spring-boot-kubernetes'
+#            command: 'build'
+#            Dockerfile: '**/Dockerfile'
+#            tags: 'latest'
+#        - script: |
+#            sudo apt-get install -y rpm
+#            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+#            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+#            trivy image teddyalfaro/spring-boot-kubernetes:latest 
+#            #trivy image --exit-code 0 --severity LOW,MEDIUM teddyalfaro/spring-boot-kubernetes:latest
+#            #trivy image --exit-code 1 --severity HIGH,CRITICAL teddyalfaro/spring-boot-kubernetes:latest
+#          displayName: Image Scan
 #        - task: Docker@2
 #          inputs:
 #            repository: 'teddyalfaro/spring-boot-kubernetes'
