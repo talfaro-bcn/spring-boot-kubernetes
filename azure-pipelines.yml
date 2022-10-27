@@ -2,43 +2,42 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
-#- stage: SAST_
-#  jobs:
-#  - job: J1
-#    displayName: SAST
-#    steps:
-#      - task: Maven@4
-#        inputs:
-#          mavenPomFile: 'pom.xml'
-#          publishJUnitResults: true
-#          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#          javaHomeOption: 'JDKVersion'
-#          mavenVersionOption: 'Default'
-#          mavenAuthenticateFeed: false
-#          effectivePomSkip: false
-#          sonarQubeRunAnalysis: false
-#      - task: SonarCloudPrepare@1
-#        inputs:
-#          SonarCloud: 'Sonarcloud_serv_conx'
-#          organization: 'talfaro-bcn'
-#          projectKey: 'talfaro-bcn_spring-boot-kubernetes'
-#          projectName: 'spring-boot-kubernetes'
-#      
-#      - task: Maven@4
-#        inputs:
-#          mavenPomFile: 'pom.xml'
-#          publishJUnitResults: true
-#          testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#          javaHomeOption: 'JDKVersion'
-#          mavenVersionOption: 'Default'
-#          mavenAuthenticateFeed: false
-#          effectivePomSkip: false
-#          sonarQubeRunAnalysis: true
-#          sqMavenPluginVersionChoice: 'latest'
-#      - task: sonarcloud-buildbreaker@2
-#        inputs:
-#          SonarCloud: 'Sonarcloud_serv_conx'
-#          organization: 'talfaro-bcn'
+- stage: SAST_
+  jobs:
+  - job: J1
+    displayName: SAST
+    steps:
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: false
+      - task: SonarCloudPrepare@1
+        inputs:
+          SonarCloud: 'Sonarcloud_serv_conx'
+          organization: 'talfaro-bcn'
+          projectKey: 'talfaro-bcn_spring-boot-kubernetes'
+          projectName: 'spring-boot-kubernetes'      
+      - task: Maven@4
+        inputs:
+          mavenPomFile: 'pom.xml'
+          publishJUnitResults: true
+          testResultsFiles: '**/surefire-reports/TEST-*.xml'
+          javaHomeOption: 'JDKVersion'
+          mavenVersionOption: 'Default'
+          mavenAuthenticateFeed: false
+          effectivePomSkip: false
+          sonarQubeRunAnalysis: true
+          sqMavenPluginVersionChoice: 'latest'
+      - task: sonarcloud-buildbreaker@2
+        inputs:
+          SonarCloud: 'Sonarcloud_serv_conx'
+          organization: 'talfaro-bcn'
 - stage: SCA_
   jobs:
   - job: J2
@@ -62,48 +61,46 @@ stages:
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
           reportsDirectory: '$(Build.SourcesDirectory)/resultado'
-      - script: echo ls $(Build.SourcesDirectory)/resultado
-
-#- stage: Container_Security_
-#  jobs:
-#    - job: J3
-#      displayName: Container-Security
-#      steps:
-#        - task: Maven@4
-#          inputs:
-#            mavenPomFile: 'pom.xml'
-#            publishJUnitResults: true
-#            testResultsFiles: '**/surefire-reports/TEST-*.xml'
-#            javaHomeOption: 'JDKVersion'
-#            mavenVersionOption: 'Default'
-#            mavenAuthenticateFeed: false
-#            effectivePomSkip: false
-#            sonarQubeRunAnalysis: false
-#        - task: DockerInstaller@0
-#          inputs:
-#            dockerVersion: '17.09.0-ce'
-#        - task: Docker@2
-#          inputs:
-#            containerRegistry: 'docker1_srv'
-#            command: 'login'
-#        - task: Docker@2
-#          inputs:
-#            containerRegistry: 'docker1_srv'
-#            repository: 'teddyalfaro/spring-boot-kubernetes'
-#            command: 'build'
-#            Dockerfile: '**/Dockerfile'
-#            tags: 'latest'
-#        - script: |
-#            sudo apt-get install -y rpm
-#            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
-#            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
-#            trivy image teddyalfaro/spring-boot-kubernetes:latest 
-#            #trivy image --exit-code 0 --severity LOW,MEDIUM teddyalfaro/spring-boot-kubernetes:latest
-#            #trivy image --exit-code 1 --severity HIGH,CRITICAL teddyalfaro/spring-boot-kubernetes:latest
-#          displayName: Image Scan
-#        - task: Docker@2
-#          inputs:
-#            repository: 'teddyalfaro/spring-boot-kubernetes'
-#            command: 'push'
-#            containerRegistry: 'docker1_srv'
-#            tags: 'latest'
+- stage: Container_Security_
+  jobs:
+    - job: J3
+      displayName: Container-Security
+      steps:
+        - task: Maven@4
+          inputs:
+            mavenPomFile: 'pom.xml'
+            publishJUnitResults: true
+            testResultsFiles: '**/surefire-reports/TEST-*.xml'
+            javaHomeOption: 'JDKVersion'
+            mavenVersionOption: 'Default'
+            mavenAuthenticateFeed: false
+            effectivePomSkip: false
+            sonarQubeRunAnalysis: false
+        - task: DockerInstaller@0
+          inputs:
+            dockerVersion: '17.09.0-ce'
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'docker1_srv'
+            command: 'login'
+        - task: Docker@2
+          inputs:
+            containerRegistry: 'docker1_srv'
+            repository: 'teddyalfaro/spring-boot-kubernetes'
+            command: 'build'
+            Dockerfile: '**/Dockerfile'
+            tags: 'latest'
+        - script: |
+            sudo apt-get install -y rpm
+            wget https://github.com/aquasecurity/trivy/releases/download/v0.27.1/trivy_0.27.1_Linux-64bit.deb
+            sudo dpkg -i trivy_0.27.1_Linux-64bit.deb
+            trivy image teddyalfaro/spring-boot-kubernetes:latest 
+            #trivy image --exit-code 0 --severity LOW,MEDIUM teddyalfaro/spring-boot-kubernetes:latest
+            #trivy image --exit-code 1 --severity HIGH,CRITICAL teddyalfaro/spring-boot-kubernetes:latest
+          displayName: Image Scan
+        - task: Docker@2
+          inputs:
+            repository: 'teddyalfaro/spring-boot-kubernetes'
+            command: 'push'
+            containerRegistry: 'docker1_srv'
+            tags: 'latest'
