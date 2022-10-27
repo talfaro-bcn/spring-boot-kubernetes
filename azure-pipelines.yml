@@ -60,7 +60,7 @@ stages:
           projectName: 'spring-boot-kubernetes'
           scanPath: '$(Build.SourcesDirectory)/target/*'
           format: 'ALL'
-          reportsDirectory: '$(Build.SourcesDirectory)/resultado'
+          reportsDirectory: '$(Build.SourcesDirectory)/resultados'
       - script: |
           #echo "$(<$(Build.SourcesDirectory)/resultados/dependency-check-report.csv )"
           vulne=$(grep ",HIGH," $(Build.SourcesDirectory)/resultados/dependency-check-report.csv | wc -l)          
