@@ -98,9 +98,9 @@ stages:
             #trivy image --exit-code 0 --severity LOW,MEDIUM teddyalfaro/spring-boot-kubernetes:latest
             #trivy image --exit-code 1 --severity HIGH,CRITICAL teddyalfaro/spring-boot-kubernetes:latest
           displayName: Image Scan
-        - task: Docker@2
-          inputs:
-            containerRegistry: 'docker1_srv'
-            repository: 'teddyalfaro/spring-boot-kubernetes'
-            command: 'push'
-            tags: 'latest'
+#        - task: Docker@2
+#          inputs:
+#            repository: 'teddyalfaro/spring-boot-kubernetes'
+#            command: 'push'
+#            containerRegistry: 'docker1_srv'
+#            tags: 'latest'
