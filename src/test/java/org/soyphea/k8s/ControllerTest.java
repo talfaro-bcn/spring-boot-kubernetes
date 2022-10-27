@@ -22,13 +22,12 @@ public class ControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-    //public String password = "hola1234";
-    
+
     @TestConfiguration
     static class UserConfigTestConfig {
         @Bean
-        UserConfig userConfig() {            
-            return new UserConfig("dara", "ok");            
+        UserConfig userConfig() {
+            return new UserConfig("dara", "ok");
         }
 
         @Bean
